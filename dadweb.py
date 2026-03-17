@@ -20,14 +20,15 @@ app.secret_key = 'lildaddy_secret_key_123'
 MODEL_XIN = "anthropic/claude-3.5-sonnet"
 
 # Lấy API key từ nhiều nguồn
-api_key = "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",
+api_key = "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"
 print(f"API Key loaded: {api_key[:15]}..." if api_key else "API Key NOT FOUND!")
 
 if not api_key:
     print("⚠️ WARNING: No API key found! Using fallback (will fail)")
+    API_KEY = ""
 
 client = OpenAI(
-    api_key="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"  # Hardcode tạm
+    api_key=API_KEY,  # Hardcode tạm
     base_url="https://openrouter.ai/api/v1"
 )
 
