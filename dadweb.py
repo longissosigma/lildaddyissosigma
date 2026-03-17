@@ -4,6 +4,9 @@ import time
 import datetime
 import random
 import os
+import sys
+print("Python version:", sys.version)
+print("Starting app...")
 
 # Debug: In ra tất cả biến môi trường (chỉ tên, không in value)
 print("=== DEBUG ENVIRONMENT VARIABLES ===")
@@ -17,7 +20,7 @@ app = Flask(__name__)
 app.secret_key = 'lildaddy_secret_key_123'
 
 # CHỈ DÙNG MODEL XỊN - FREE LÀ CỨT
-MODEL_XIN = "anthropic/claude-3.5-sonnet"
+MODEL_XIN = "openai/gpt-4"
 
 # Lấy API key từ nhiều nguồn
 api_key = "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"
