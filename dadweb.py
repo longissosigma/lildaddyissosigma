@@ -27,7 +27,7 @@ if not api_key:
     print("⚠️ WARNING: No API key found! Using fallback (will fail)")
 
 client = OpenAI(
-    api_key="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",  # Hardcode tạm
+    api_key="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"  # Hardcode tạm
     base_url="https://openrouter.ai/api/v1"
 )
 
