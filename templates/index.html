@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@HeySonYouKnowWhat</title>
+    <title>@HeyKiddoYouKnowWhat</title>
     <meta name="google-site-verification" content="_zFDqvMb8ceAuTCB0REbIX0wVFrfic4jUssvDsiLMi4" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
@@ -34,7 +34,7 @@
         }
 
         .hidden {
-            display: none;
+            display: none !important;
         }
 
         .msg-content {
@@ -47,6 +47,8 @@
         .card-skill {
             animation: slideUp 0.4s ease-out;
             border-left: 8px solid #fbbf24;
+            margin-top: 12px;
+            margin-bottom: 8px;
         }
 
         @keyframes slideUp {
@@ -77,13 +79,84 @@
                 transform: scale(1);
             }
         }
+
+        /* Intro overlay */
+        .intro-overlay {
+            backdrop-filter: blur(4px);
+        }
     </style>
 </head>
 
 <body class="flex items-center justify-center min-h-screen p-4">
 
+    <!-- INTRO OVERLAY - Hiện đầu tiên -->
+    <div id="introOverlay"
+        class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-[100] intro-overlay">
+        <div
+            class="popup-enter bg-[#fdf5e6] border-4 border-[#5d4037] rounded-2xl max-w-2xl w-full mx-4 shadow-2xl relative max-h-[85vh] overflow-y-auto">
+
+            <!-- Nút X để đóng -->
+            <button onclick="closeIntro()"
+                class="absolute top-4 right-4 w-10 h-10 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white font-bold text-xl transition shadow-lg z-10">
+                ✕
+            </button>
+
+            <!-- Nội dung giới thiệu -->
+            <div class="p-8">
+                <div class="text-center mb-6">
+                    <span class="text-6xl mb-4 block">👨‍👦</span>
+                    <h1 class="text-4xl font-black text-[#5d4037] mb-2">HEY KIDDO<br>YOU KNOW WHAT</h1>
+                    <p class="text-sm text-gray-600 italic">Founder: Long Pham</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl border-l-8 border-blue-500 mb-6 shadow-md">
+                    <p class="text-gray-700 leading-relaxed">
+                        Đôi khi trong cuộc sống, có những điều bạn không thể hỏi ai, có những vấp ngã không có người
+                        đỡ.Nơi này là một góc nhỏ, nơi 'Người Bố' luôn ở đây để lắng nghe, để chia sẻ và cùng bạn đi qua
+                        những khoảng lặng.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                        <div class="text-3xl mb-2">💬</div>
+                        <h3 class="font-bold text-blue-800 mb-1">Trò chuyện</h3>
+                        <p class="text-sm text-gray-600">Nhập bất kỳ câu hỏi hoặc chia sẻ nào</p>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                        <div class="text-3xl mb-2">🎯</div>
+                        <h3 class="font-bold text-green-800 mb-1">Lời khuyên</h3>
+                        <p class="text-sm text-gray-600">Nhận lời khuyên chân thành từ người bố</p>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                        <div class="text-3xl mb-2">🔒</div>
+                        <h3 class="font-bold text-purple-800 mb-1">Bảo mật</h3>
+                        <p class="text-sm text-gray-600">Mọi chia sẻ đều được lắng nghe một cách chân thành nhất</p>
+                    </div>
+                    <div class="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                        <div class="text-3xl mb-2">⭐️</div>
+                        <h3 class="font-bold text-amber-800 mb-1">Kho tàng của bố</h3>
+                        <p class="text-sm text-gray-600">Thu thập những bí kíp từ Người Bố</p>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button onclick="closeIntro()"
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition shadow-lg text-lg">
+                        Bắt đầu hành trình 🌟
+                    </button>
+                </div>
+
+                <div class="mt-6 text-center text-xs text-gray-500 border-t border-gray-300 pt-4">
+                    <p>Mọi câu chuyện của con đều được cất giữ cẩn thận trong kho tàng lắng nghe của bố. Không có người
+                        thứ ba nào biết đâu.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Popup hỏi tên lần đầu -->
-    <div id="namePopup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div id="namePopup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="popup-enter bg-[#fdf5e6] border-4 border-[#5d4037] p-8 rounded-2xl max-w-md w-full mx-4 shadow-2xl">
             <div class="text-center mb-6">
                 <span class="text-6xl mb-4 block">👨</span>
@@ -112,7 +185,7 @@
         <div class="w-1/3 p-6 flex flex-col bg-[#fbf8f1] border-r border-[#e0d5c5]">
             <div class="mb-10 text-center border-4 border-[#5d4037] p-6 bg-white shadow-[8px_8px_0px_#5d4037]">
                 <h1 class="text-2xl font-black text-[#5d4037] leading-tight">
-                    SON<br><span class="text-blue-600 italic">YOU KNOW</span><br>WHAT
+                    KIDDO<br><span class="text-blue-600 italic">YOU KNOW</span><br>WHAT
                 </h1>
             </div>
 
@@ -142,7 +215,7 @@
                             LIL OLD
                         </h2>
                         <p class="text-[10px] text-blue-600 font-bold tracking-[0.2em] mt-1 uppercase">
-                            hmmm chua nghi ra
+                            Góc tâm sự cha con
                         </p>
                     </div>
                     <div class="text-right">
@@ -157,8 +230,7 @@
                             🏠</div>
                         <div
                             class="bg-white shadow-sm border-l-4 border-blue-500 rounded-lg p-3 max-w-[85%] msg-content">
-                            Chào con trai, Bố đây. Hôm nay ở trường hay ở ngoài có chuyện gì muốn kể Bố nghe không? Bất
-                            cứ chuyện gì nhé.
+                            Chào con, Bố đây. Hôm nay có chuyện gì muốn kể Bố nghe không? Bất cứ chuyện gì cũng được.
                         </div>
                     </div>
                 </div>
@@ -177,30 +249,51 @@
             <div id="tab-huong-dan" class="hidden h-full overflow-y-auto">
                 <div class="mb-6 border-b-2 border-yellow-400 pb-2">
                     <h2 class="text-2xl font-black text-[#5d4037] uppercase italic">KHO TÀNG CỦA BỐ</h2>
-                    <p class="text-xs text-gray-500">Những thẻ kỹ năng con đã thu thập được.</p>
+                    <p class="text-xs text-gray-500">Những thẻ bài kỹ năng con đã thu thập được từ lời khuyên của bố.
+                    </p>
                 </div>
                 <div id="card-grid" class="grid grid-cols-2 gap-4 text-left">
-                    <div
-                        class="col-span-2 p-10 bg-yellow-50 border-2 border-dashed border-yellow-300 rounded-2xl text-center">
-                        <p class="text-gray-400 italic">Chưa có "bí kíp" nào được lưu giữ. Hãy tâm sự với dady để nhận
-                            thẻ
-                            bài nhé!</p>
-                    </div>
+                    <!-- Cards sẽ được thêm vào đây bằng JavaScript -->
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Biến lưu tên người dùng
+        // Biến lưu tên người dùng và kho báu
         let userName = localStorage.getItem('lildaddy_user_name');
+        let treasureCards = JSON.parse(localStorage.getItem('treasure_cards') || '[]');
 
-        // Nếu chưa có tên, hiện popup
-        window.onload = function () {
-            if (!userName) {
-                document.getElementById('namePopup').classList.remove('hidden');
+        // Hiển thị các thẻ đã lưu khi load trang
+        function loadSavedCards() {
+            const grid = document.querySelector('#tab-huong-dan .grid');
+            grid.innerHTML = '';
+
+            if (treasureCards.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-2 p-10 bg-yellow-50 border-2 border-dashed border-yellow-300 rounded-2xl text-center">
+                        <p class="text-gray-400 italic">Chưa có "bí kíp" nào được lưu giữ. Hãy tâm sự với bố để nhận thẻ bài nhé!</p>
+                    </div>`;
+            } else {
+                treasureCards.forEach(card => {
+                    grid.innerHTML += `
+                        <div class="p-4 bg-white border-2 border-yellow-100 rounded-xl shadow-sm hover:shadow-md transition">
+                            <div class="font-black text-sm text-blue-600 mb-1 uppercase tracking-tighter italic">${card.title}</div>
+                            <div class="text-[11px] text-gray-500 leading-snug">${card.content}</div>
+                        </div>`;
+                });
             }
-        };
+        }
+
+        // Hàm đóng intro và hiện popup hỏi tên
+        function closeIntro() {
+            document.getElementById('introOverlay').classList.add('hidden');
+
+            // LUÔN hiện popup hỏi tên sau khi đóng intro
+            setTimeout(() => {
+                document.getElementById('namePopup').classList.remove('hidden');
+            }, 300);
+        }
 
         function switchTab(tabName) {
             const tabs = ['tab-nhat-ky', 'tab-huong-dan'];
@@ -213,6 +306,11 @@
 
             document.getElementById('tab-' + tabName).classList.remove('hidden');
             document.getElementById('btn-' + tabName).classList.add('active');
+
+            // Load lại cards khi chuyển sang tab kho tàng
+            if (tabName === 'huong-dan') {
+                loadSavedCards();
+            }
         }
 
         function autoResize(textarea) {
@@ -267,6 +365,21 @@
             }
         }
 
+        // Hàm lưu thẻ bài vào kho báu
+        function saveCardToTreasure(title, content) {
+            const newCard = { title, content, id: Date.now() };
+            treasureCards.push(newCard);
+            localStorage.setItem('treasure_cards', JSON.stringify(treasureCards));
+
+            // Hiện thông báo
+            alert('✅ Đã lưu thẻ bài vào kho tàng!');
+
+            // Nếu đang ở tab kho tàng, cập nhật ngay
+            if (!document.getElementById('tab-huong-dan').classList.contains('hidden')) {
+                loadSavedCards();
+            }
+        }
+
         async function sendMessage() {
             const input = document.getElementById('user-input');
             const chatBox = document.getElementById('chat-box');
@@ -295,25 +408,40 @@
                 const data = await response.json();
                 let aiRes = data.response;
 
-                // XỬ LÝ THẺ BÀI
-                const cardRegex = /\[CARD:\s*(.*?)\s*\|\s*(.*?)\s*\]/g;
-                let cardHTML = "";
+                // XỬ LÝ THẺ BÀI - Nhận nhiều định dạng khác nhau
+                const cardRegex = /\[(?:CARD|CAITO|KỸ NĂNG|BÍ KÍP|LỜI KHUYÊN|TIPS|SKILL):\s*(.*?)\s*\|\s*(.*?)\s*\]/gi;
+                let cards = [];
 
+                // Tìm tất cả thẻ bài trong response
                 aiRes = aiRes.replace(cardRegex, (match, title, content) => {
-                    cardHTML = `
+                    cards.push({ title: title.trim(), content: content.trim() });
+
+                    // Tạo HTML cho thẻ bài
+                    const cardHTML = `
                         <div class="card-skill mt-4 p-4 w-72 shadow-xl rounded-xl bg-gradient-to-br from-yellow-50 to-orange-50 relative overflow-hidden border border-yellow-200">
                             <div class="absolute top-0 right-0 px-2 py-1 bg-yellow-400 text-[9px] font-black text-white">BÍ KÍP</div>
-                            <div class="text-sm font-black text-[#5d4037] border-b-2 border-yellow-200 mb-2 pb-1 uppercase italic">${title}</div>
-                            <div class="text-[11px] leading-relaxed text-gray-700 font-medium">${content}</div>
-                            <button onclick="saveToBox('${title}', '${content}')" 
+                            <div class="text-sm font-black text-[#5d4037] border-b-2 border-yellow-200 mb-2 pb-1 uppercase italic">${title.trim()}</div>
+                            <div class="text-[11px] leading-relaxed text-gray-700 font-medium">${content.trim()}</div>
+                            <button onclick="saveCardToTreasure('${title.trim().replace(/'/g, "\\'")}', '${content.trim().replace(/'/g, "\\'")}')" 
                                 class="mt-4 w-full bg-[#5d4037] text-white text-[10px] py-2 rounded-lg hover:bg-black transition font-bold uppercase tracking-wider">
-                                Cất vào kho báu
+                                📦 Cất vào kho báu
                             </button>
                         </div>`;
-                    return "";
+
+                    // Thêm card vào chat ngay dưới tin nhắn bố
+                    setTimeout(() => {
+                        const lastMessage = chatBox.lastElementChild;
+                        if (lastMessage && lastMessage.querySelector('.card-skill') === null) {
+                            const cardContainer = document.createElement('div');
+                            cardContainer.innerHTML = cardHTML;
+                            lastMessage.querySelector('.max-w-\\[85\\%\\]').appendChild(cardContainer.firstChild);
+                        }
+                    }, 100);
+
+                    return ""; // Xóa card text khỏi tin nhắn
                 });
 
-                // Hiển thị tin nhắn Bố
+                // Hiển thị tin nhắn Bố (đã xóa card text)
                 chatBox.innerHTML += `
                     <div class="flex gap-3 mb-6">
                         <div class="w-8 h-8 bg-orange-200 rounded-full flex-shrink-0 flex items-center justify-center shadow-sm">🏠</div>
@@ -321,30 +449,23 @@
                             <div class="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm border-l-4 border-blue-500 msg-content font-medium text-gray-800">
                                 ${aiRes}
                             </div>
-                            ${cardHTML}
                         </div>
                     </div>`;
 
                 chatBox.scrollTop = chatBox.scrollHeight;
+
             } catch (e) {
                 console.error("Lỗi kết nối:", e);
+                chatBox.innerHTML += `
+                    <div class="flex gap-3 mb-6">
+                        <div class="w-8 h-8 bg-orange-200 rounded-full flex-shrink-0 flex items-center justify-center shadow-sm">🏠</div>
+                        <div class="max-w-[85%]">
+                            <div class="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm border-l-4 border-red-500 msg-content font-medium text-gray-800">
+                                Bố đang bận chút, thử lại sau nhé con!
+                            </div>
+                        </div>
+                    </div>`;
             }
-        }
-
-        function saveToBox(title, content) {
-            const box = document.getElementById('tab-huong-dan');
-            if (box.innerHTML.includes("Chưa có \"bí kíp\"")) {
-                box.querySelector('.grid').innerHTML = '';
-            }
-
-            const grid = box.querySelector('.grid');
-            grid.innerHTML += `
-                <div class="p-4 bg-white border-2 border-yellow-100 rounded-xl shadow-sm hover:shadow-md transition">
-                    <div class="font-black text-sm text-blue-600 mb-1 uppercase tracking-tighter italic">${title}</div>
-                    <div class="text-[11px] text-gray-500 leading-snug">${content}</div>
-                </div>`;
-
-            alert("Đã cất bí kíp vào kho báu!");
         }
 
         document.getElementById('user-input').addEventListener('keydown', function (e) {
@@ -353,6 +474,9 @@
                 sendMessage();
             }
         });
+
+        // Load cards khi khởi động
+        loadSavedCards();
     </script>
 </body>
 

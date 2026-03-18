@@ -1,15 +1,21 @@
 from flask import Flask, render_template, request, jsonify, session
 from openai import OpenAI
 import os
-import sys
 import random
+from dotenv import load_dotenv  # Thêm dòng này
+
+# Load .env cho local, Render sẽ bỏ qua vì không có file .env
+load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = 'lildaddy_secret_key_123'
 
-# 1. Cấu hình API Key (Lấy từ Environment hoặc dùng mặc định)
+# Lấy key từ: Render env -> .env file -> None
 API_KEY = os.environ.get("OPENROUTER_API_KEY")
 MODEL_XIN = "openai/gpt-4"
+
+print(f"🚀 Running on: {'Render' if os.environ.get('RENDER') else 'Local'}")
+print(f"🔑 API Key exists: {API_KEY is not None}")
 
 client = OpenAI(
     api_key=API_KEY, 
