@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.secret_key = 'lildaddy_secret_key_123'
 
 # 1. Cấu hình API Key (Lấy từ Environment hoặc dùng mặc định)
-API_KEY = os.environ.get("OPENROUTER_API_KEY", "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")
+API_KEY = os.environ.get("OPENROUTER_API_KEY")
 MODEL_XIN = "openai/gpt-4"
 
 client = OpenAI(
