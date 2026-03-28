@@ -8,7 +8,6 @@
     <meta name="google-site-verification" content="_zFDqvMb8ceAuTCB0REbIX0wVFrfic4jUssvDsiLMi4" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
-
     <script src="https://cdn.amplitude.com/script/30a7b03e80e8c8174481b8e8279066ed.js"></script>
     <script>
         window.amplitude.add(window.sessionReplay.plugin({ sampleRate: 1 }));
@@ -21,7 +20,6 @@
             }
         });
     </script>
-
     <style>
         body {
             font-family: 'Quicksand', sans-serif;
@@ -59,9 +57,13 @@
 
         .card-skill {
             animation: slideUp 0.4s ease-out;
-            border-left: 8px solid #fbbf24;
             margin-top: 12px;
             margin-bottom: 8px;
+            transition: transform 0.2s;
+        }
+
+        .card-skill:hover {
+            transform: translateY(-4px);
         }
 
         @keyframes slideUp {
@@ -74,6 +76,25 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        @keyframes bounce {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0.6);
+                opacity: 0.5;
+            }
+
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .animate-bounce {
+            animation: bounce 1.2s infinite ease-in-out;
         }
 
         .popup-enter {
@@ -95,11 +116,128 @@
         .intro-overlay {
             backdrop-filter: blur(4px);
         }
+
+        .emotion-btn.selected {
+            background-color: #fbbf24 !important;
+            color: #5d4037 !important;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Tier Colors */
+        .card-common {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border-left: 8px solid #22c55e;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.15);
+        }
+
+        .card-epic {
+            background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+            border-left: 8px solid #8b5cf6;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+        }
+
+        .card-legendary {
+            background: linear-gradient(135deg, #fefce8 0%, #fef3c7 100%);
+            border-left: 8px solid #eab308;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(234, 179, 8, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-legendary::before {
+            content: "✨";
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 60px;
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        .tier-badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-bottom: 8px;
+        }
+
+        .tier-common .tier-badge {
+            background: #22c55e;
+            color: white;
+        }
+
+        .tier-epic .tier-badge {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .tier-legendary .tier-badge {
+            background: #eab308;
+            color: #5d4037;
+        }
+
+        /* Share Modal */
+        .share-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+        }
+
+        .share-card {
+            background: #fdf5e6;
+            border: 8px solid #5d4037;
+            border-radius: 24px;
+            max-width: 400px;
+            width: 90%;
+            padding: 24px;
+            position: relative;
+            text-align: center;
+        }
+
+        .share-card .tier-label {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .share-card .advice-text {
+            font-size: 18px;
+            font-weight: 600;
+            font-style: italic;
+            margin: 20px 0;
+            line-height: 1.4;
+            color: #2d3748;
+        }
+
+        .share-card .web-link {
+            margin: 16px 0 8px;
+            font-size: 12px;
+            color: #3b82f6;
+            word-break: break-all;
+        }
+
+        .share-card .hashtag {
+            font-size: 11px;
+            color: #8b5cf6;
+            margin-top: 12px;
+            letter-spacing: 0.5px;
+        }
     </style>
 </head>
 
 <body class="flex items-center justify-center min-h-screen p-4">
 
+    <!-- INTRO OVERLAY -->
     <div id="introOverlay"
         class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-[100] intro-overlay">
         <div
@@ -112,17 +250,11 @@
                     <h1 class="text-4xl font-black text-[#5d4037] mb-2">HEY KIDDO<br>YOU KNOW WHAT</h1>
                     <p class="text-sm text-gray-600 italic">Founder: Long Pham</p>
                 </div>
-
                 <div class="bg-white p-6 rounded-xl border-l-8 border-blue-500 mb-6 shadow-md">
-                    <p class="text-gray-700 leading-relaxed">
-                        Không phải lúc nào bạn cũng có người để hỏi.
-                        Vì vậy, đây là nơi bạn có thể nói ra
-                        và nhận lại một câu trả lời nghiêm túc.
-                        Không phán xét.
-                        Chỉ để bạn nghĩ rõ hơn.
-                    </p>
+                    <p class="text-gray-700 leading-relaxed">Không phải lúc nào bạn cũng có người để hỏi. Vì vậy, đây là
+                        nơi bạn có thể nói ra và nhận lại một câu trả lời nghiêm túc. Không phán xét. Chỉ để bạn nghĩ rõ
+                        hơn.</p>
                 </div>
-
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                     <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
                         <div class="text-3xl mb-2">💬</div>
@@ -145,13 +277,9 @@
                         <p class="text-sm text-gray-600">Những nguyên tắc và bài học giúp bạn suy nghĩ rõ hơn.</p>
                     </div>
                 </div>
-
-                <div class="text-center">
-                    <button onclick="closeIntro()"
+                <div class="text-center"><button onclick="closeIntro()"
                         class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition shadow-lg text-lg">Bắt
-                        đầu trò chuyện</button>
-                </div>
-
+                        đầu trò chuyện</button></div>
                 <div class="mt-6 text-center text-xs text-gray-500 border-t border-gray-300 pt-4">
                     <p>Những gì bạn chia sẻ sẽ được giữ riêng tư và tôn trọng.</p>
                 </div>
@@ -159,6 +287,7 @@
         </div>
     </div>
 
+    <!-- POPUP HỎI TÊN -->
     <div id="namePopup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="popup-enter bg-[#fdf5e6] border-4 border-[#5d4037] p-8 rounded-2xl max-w-md w-full mx-4 shadow-2xl">
             <div class="text-center mb-6"><span class="text-6xl mb-4 block">👨</span>
@@ -175,6 +304,7 @@
         </div>
     </div>
 
+    <!-- SECRET POPUP (QUỸ KẸO) -->
     <div id="secretPopup"
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] hidden intro-overlay">
         <div
@@ -187,13 +317,84 @@
             <div
                 class="bg-white p-4 rounded-xl border-l-4 border-rose-400 mb-5 text-sm font-semibold text-gray-700 shadow-inner">
                 Nếu thấy bố nói hay, "tip" cho bố 5k mua kẹo ngọt giọng nhé! 🍬🗣️</div>
-            <div class="bg-white p-3 rounded-xl border-2 border-[#e1d9cf] flex justify-center shadow-sm">
-                <img src="https://img.vietqr.io/image/vcb-1048067568-print.png?amount=5000&accountName=PHAM%20NHAT%20LONG"
-                    class="rounded-lg w-full max-w-[200px] h-auto object-contain">
+            <div class="bg-white p-3 rounded-xl border-2 border-[#e1d9cf] flex justify-center shadow-sm"><img
+                    src="https://img.vietqr.io/image/vcb-1048067568-print.png?amount=5000&accountName=PHAM%20NHAT%20LONG"
+                    class="rounded-lg w-full max-w-[200px] h-auto object-contain"></div>
+        </div>
+    </div>
+
+    <!-- DAILY ADVICE POPUP -->
+    <div id="dailyAdvicePopup"
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[70] hidden intro-overlay">
+        <div
+            class="popup-enter bg-[#fdf5e6] border-4 border-[#5d4037] rounded-2xl max-w-md w-full mx-4 shadow-2xl relative">
+            <button onclick="closeDailyAdvice()"
+                class="absolute -top-3 -right-3 w-8 h-8 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white font-bold transition shadow-lg z-10">✕</button>
+            <div class="p-6">
+                <div class="text-center mb-4"><span class="text-5xl mb-2 block">☀️</span>
+                    <h2 class="text-2xl font-black text-[#5d4037]">Lời khuyên mỗi ngày</h2>
+                    <p class="text-xs text-gray-500 mt-1">Mỗi ngày một lời khuyên dành riêng cho cảm xúc của con</p>
+                </div>
+                <div id="dailyAdviceStatus"
+                    class="mb-4 p-3 bg-amber-50 rounded-lg border border-amber-200 text-center text-sm font-medium text-amber-700 hidden">
+                    🌟 Hôm nay con đã nhận lời khuyên rồi. Ngày mai quay lại nhé!</div>
+                <div id="dailyAdviceForm">
+                    <div class="bg-white p-4 rounded-xl border-l-4 border-amber-400 mb-4">
+                        <p class="text-sm font-semibold text-gray-700 mb-3">Cảm xúc của con lúc này:</p>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="selectEmotion('Buồn')"
+                                class="emotion-btn py-2 px-3 rounded-lg bg-gray-100 hover:bg-blue-100 transition text-sm font-medium">😔
+                                Buồn</button>
+                            <button onclick="selectEmotion('Lo lắng')"
+                                class="emotion-btn py-2 px-3 rounded-lg bg-gray-100 hover:bg-blue-100 transition text-sm font-medium">😰
+                                Lo lắng</button>
+                            <button onclick="selectEmotion('Bực bội')"
+                                class="emotion-btn py-2 px-3 rounded-lg bg-gray-100 hover:bg-blue-100 transition text-sm font-medium">😤
+                                Bực bội</button>
+                            <button onclick="selectEmotion('Bất an')"
+                                class="emotion-btn py-2 px-3 rounded-lg bg-gray-100 hover:bg-blue-100 transition text-sm font-medium">😞
+                                Bất an</button>
+                            <button onclick="selectEmotion('Mơ hồ')"
+                                class="emotion-btn py-2 px-3 rounded-lg bg-gray-100 hover:bg-blue-100 transition text-sm font-medium">🤔
+                                Mơ hồ</button>
+                            <button onclick="selectEmotion('Muốn được động viên')"
+                                class="emotion-btn py-2 px-3 rounded-lg bg-gray-100 hover:bg-blue-100 transition text-sm font-medium">🙂
+                                Muốn được động viên</button>
+                            <button onclick="selectEmotion('Hôm nay ổn, chỉ muốn nhận thẻ bài')"
+                                class="emotion-btn col-span-2 py-2 px-3 rounded-lg bg-gray-100 hover:bg-blue-100 transition text-sm font-medium">😊
+                                Hôm nay ổn, chỉ muốn nhận thẻ bài</button>
+                        </div>
+                    </div>
+                    <button id="submitAdviceBtn" onclick="submitDailyAdvice()" disabled
+                        class="w-full bg-amber-500 hover:bg-amber-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold py-3 rounded-lg transition shadow-md">Nhận
+                        lời khuyên ☀️</button>
+                </div>
+                <div id="dailyAdviceResult" class="hidden mt-4">
+                    <div class="bg-white p-4 rounded-xl border-l-4 border-green-500 shadow-sm">
+                        <p class="text-xs text-green-600 font-semibold mb-2">✨ Lời khuyên từ bố:</p>
+                        <p id="adviceContent" class="text-sm text-gray-700 leading-relaxed"></p>
+                    </div>
+                    <button onclick="closeDailyAdvice()"
+                        class="w-full mt-3 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 rounded-lg transition">Đóng</button>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- SHARE MODAL (hidden by default) -->
+    <div id="shareModal" class="hidden share-modal" onclick="closeShareModal()">
+        <div class="share-card" onclick="event.stopPropagation()">
+            <div id="shareTierBadge" class="tier-label"></div>
+            <div id="shareTitle" class="text-xl font-black text-[#5d4037] mb-2"></div>
+            <div id="shareContent" class="advice-text"></div>
+            <div class="web-link">📱 https://bit.ly/4rNpYGK</div>
+            <div class="hashtag">@kiddoyouknowwhat</div>
+            <button onclick="closeShareModal()"
+                class="mt-4 px-6 py-2 bg-[#5d4037] text-white rounded-full text-sm hover:bg-black transition">Đóng</button>
+        </div>
+    </div>
+
+    <!-- MAIN CHAT CONTAINER -->
     <div class="notebook-container w-full max-w-6xl flex overflow-hidden shadow-2xl">
         <div class="w-1/3 p-6 flex flex-col bg-[#fbf8f1] border-r border-[#e0d5c5]">
             <div class="mb-10 text-center border-4 border-[#5d4037] p-6 bg-white shadow-[8px_8px_0px_#5d4037]">
@@ -202,22 +403,21 @@
             </div>
             <nav class="space-y-2">
                 <button onclick="switchTab('nhat-ky')" id="btn-nhat-ky"
-                    class="sidebar-item active w-full flex items-center gap-4 p-4 text-lg font-bold transition rounded-l-lg">Nhật
-                    ký cá nhân</button>
+                    class="sidebar-item active w-full flex items-center gap-4 p-4 text-lg font-bold transition rounded-l-lg">📝
+                    Nhật ký cá nhân</button>
                 <button onclick="switchTab('huong-dan')" id="btn-huong-dan"
-                    class="sidebar-item w-full flex items-center gap-4 p-4 text-lg font-bold transition text-left rounded-l-lg">Góc
-                    nhìn & bài học</button>
+                    class="sidebar-item w-full flex items-center gap-4 p-4 text-lg font-bold transition text-left rounded-l-lg">📚
+                    Góc nhìn & bài học</button>
+                <button onclick="openDailyAdvice()"
+                    class="sidebar-item w-full flex items-center gap-4 p-4 text-lg font-bold transition rounded-l-lg hover:bg-amber-50 hover:text-amber-600">☀️
+                    Lời khuyên mỗi ngày</button>
                 <button onclick="openSecret()"
-                    class="sidebar-item w-full flex items-center gap-4 p-4 text-lg font-bold transition text-left rounded-l-lg hover:bg-rose-50 hover:text-rose-600">Secret</button>
+                    class="sidebar-item w-full flex items-center gap-4 p-4 text-lg font-bold transition text-left rounded-l-lg hover:bg-rose-50 hover:text-rose-600">🤫
+                    Secret</button>
             </nav>
-
-            <div class="mt-40 px-4">
-                <a href="https://bit.ly/47Rt5X2" target="_blank"
-                    class="text-[15px] font-bold text-[#5d4037] hover:text-blue-600 transition tracking-wide block">
-                    📸 IG: https://bit.ly/47Rt5X2
-                </a>
-            </div>
-
+            <div class="mt-40 px-4"><a href="https://bit.ly/47Rt5X2" target="_blank"
+                    class="text-[15px] font-bold text-[#5d4037] hover:text-blue-600 transition tracking-wide block mt-6">📸
+                    IG: https://bit.ly/47Rt5X2</a></div>
             <div
                 class="mt-auto p-4 bg-blue-50 rounded-lg border border-blue-100 italic text-xs font-bold text-blue-600">
                 ● Hệ thống đã kết nối</div>
@@ -263,11 +463,107 @@
     <script>
         let userName = localStorage.getItem('lildaddy_user_name');
         let treasureCards = JSON.parse(localStorage.getItem('treasure_cards') || '[]');
+        let selectedEmotion = null;
+        let currentShareCard = null;
 
         function openSecret() { document.getElementById('secretPopup').classList.remove('hidden'); }
         function closeSecret() { document.getElementById('secretPopup').classList.add('hidden'); }
         function closeIntro() { document.getElementById('introOverlay').classList.add('hidden'); setTimeout(() => { document.getElementById('namePopup').classList.remove('hidden'); }, 300); }
         function autoResize(textarea) { textarea.style.height = 'auto'; textarea.style.height = textarea.scrollHeight + 'px'; }
+
+        // Share functions
+        function openShareModal(card) {
+            currentShareCard = card;
+            document.getElementById('shareTitle').innerHTML = card.title;
+            document.getElementById('shareContent').innerHTML = `"${card.content}"`;
+
+            let tierText = '';
+            if (card.tier === 'common') {
+                tierText = '✨ COMMON ✨';
+                document.getElementById('shareTierBadge').style.color = '#22c55e';
+            } else if (card.tier === 'epic') {
+                tierText = '⚡ EPIC ⚡';
+                document.getElementById('shareTierBadge').style.color = '#8b5cf6';
+            } else {
+                tierText = '🏆 LEGENDARY 🏆';
+                document.getElementById('shareTierBadge').style.color = '#eab308';
+            }
+            document.getElementById('shareTierBadge').innerHTML = tierText;
+            document.getElementById('shareModal').classList.remove('hidden');
+        }
+
+        function closeShareModal() {
+            document.getElementById('shareModal').classList.add('hidden');
+            currentShareCard = null;
+        }
+
+        // DAILY ADVICE FUNCTIONS
+        function openDailyAdvice() {
+            selectedEmotion = null;
+            document.getElementById('submitAdviceBtn').disabled = true;
+            document.getElementById('dailyAdviceForm').classList.remove('hidden');
+            document.getElementById('dailyAdviceResult').classList.add('hidden');
+            document.querySelectorAll('.emotion-btn').forEach(btn => btn.classList.remove('selected'));
+            const lastDate = localStorage.getItem('daily_advice_date');
+            const today = new Date().toDateString();
+            if (lastDate === today) {
+                document.getElementById('dailyAdviceStatus').classList.remove('hidden');
+                document.getElementById('submitAdviceBtn').disabled = true;
+            } else {
+                document.getElementById('dailyAdviceStatus').classList.add('hidden');
+            }
+            document.getElementById('dailyAdvicePopup').classList.remove('hidden');
+        }
+
+        function closeDailyAdvice() { document.getElementById('dailyAdvicePopup').classList.add('hidden'); }
+
+        function selectEmotion(emotion) {
+            selectedEmotion = emotion;
+            document.querySelectorAll('.emotion-btn').forEach(btn => btn.classList.remove('selected'));
+            event.target.classList.add('selected');
+            document.getElementById('submitAdviceBtn').disabled = false;
+        }
+
+        async function submitDailyAdvice() {
+            if (!selectedEmotion) { alert('Hãy chọn cảm xúc của con trước nhé!'); return; }
+            const today = new Date().toDateString();
+            const lastDate = localStorage.getItem('daily_advice_date');
+            if (lastDate === today) { alert('Hôm nay con đã nhận lời khuyên rồi. Ngày mai quay lại nhé!'); return; }
+            document.getElementById('submitAdviceBtn').disabled = true;
+            document.getElementById('submitAdviceBtn').innerHTML = '🔄 Đang suy nghĩ...';
+            try {
+                const response = await fetch('/daily_advice', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ emotion: selectedEmotion })
+                });
+                const data = await response.json();
+                if (data.status === 'success') {
+                    localStorage.setItem('daily_advice_date', today);
+                    document.getElementById('adviceContent').innerHTML = data.response.replace(/\n/g, '<br>');
+                    document.getElementById('dailyAdviceForm').classList.add('hidden');
+                    document.getElementById('dailyAdviceResult').classList.remove('hidden');
+                } else {
+                    alert('Có lỗi xảy ra, thử lại sau nhé!');
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Lỗi kết nối, thử lại sau!');
+            } finally {
+                document.getElementById('submitAdviceBtn').innerHTML = 'Nhận lời khuyên ☀️';
+            }
+        }
+
+        // Function to determine tier (matching backend logic)
+        async function determineTier(title, content) {
+            const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(title + content));
+            const hashArray = Array.from(new Uint8Array(hash));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            const rand = parseInt(hashHex.slice(0, 4), 16) % 100;
+            if (rand < 60) return 'common';
+            if (rand < 90) return 'epic';
+            return 'legendary';
+        }
 
         function loadSavedCards() {
             const grid = document.getElementById('card-grid');
@@ -276,7 +572,17 @@
                 grid.innerHTML = `<div class="col-span-2 p-10 bg-yellow-50 border-2 border-dashed border-yellow-300 rounded-2xl text-center italic text-gray-400">Chưa có bí kíp nào được lưu giữ. Hãy tâm sự với bố nhé!</div>`;
             } else {
                 treasureCards.forEach(card => {
-                    grid.innerHTML += `<div class="p-4 bg-white border-2 border-yellow-100 rounded-xl shadow-sm"><div class="font-black text-sm text-blue-600 mb-1 italic uppercase">${card.title}</div><div class="text-[11px] text-gray-500 leading-snug font-medium">${card.content}</div></div>`;
+                    const tierClass = card.tier === 'common' ? 'card-common' : (card.tier === 'epic' ? 'card-epic' : 'card-legendary');
+                    const tierLabel = card.tier === 'common' ? '✨ COMMON ✨' : (card.tier === 'epic' ? '⚡ EPIC ⚡' : '🏆 LEGENDARY 🏆');
+                    grid.innerHTML += `
+                        <div class="card-skill ${tierClass} p-4 relative">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="tier-badge" style="background: ${card.tier === 'common' ? '#22c55e' : (card.tier === 'epic' ? '#8b5cf6' : '#eab308')}; color: white;">${tierLabel}</div>
+                                <button onclick="openShareModal(${JSON.stringify(card).replace(/"/g, '&quot;')})" class="text-xs bg-white/50 hover:bg-white rounded-full px-2 py-1 transition">🔗 Chia sẻ</button>
+                            </div>
+                            <div class="font-black text-sm text-[#5d4037] mb-1 uppercase italic">${card.title}</div>
+                            <div class="text-[11px] text-gray-600 leading-snug font-medium">${card.content}</div>
+                        </div>`;
                 });
             }
         }
@@ -303,9 +609,11 @@
             }
         }
 
-        function saveCardToTreasure(title, content) {
+        async function saveCardToTreasure(title, content) {
             if (treasureCards.some(c => c.title === title && c.content === content)) return alert('Thẻ này con đã lưu rồi!');
-            treasureCards.push({ title, content, id: Date.now() });
+            const tier = await determineTier(title, content);
+            const newCard = { title, content, tier, id: Date.now() };
+            treasureCards.push(newCard);
             localStorage.setItem('treasure_cards', JSON.stringify(treasureCards));
             alert('✅ Đã cất vào kho báu của con!');
         }
@@ -319,41 +627,45 @@
             chatBox.innerHTML += `<div class="flex justify-end mb-6"><div class="bg-blue-600 text-white p-3 rounded-2xl rounded-tr-none shadow-md max-w-[85%] msg-content font-medium"><span class="text-[10px] text-blue-200 block mb-1">${userName || 'Con'}</span>${messageText}</div></div>`;
             input.value = ""; input.style.height = 'auto'; chatBox.scrollTop = chatBox.scrollHeight;
 
+            const thinkingId = 'thinking-' + Date.now();
+            chatBox.innerHTML += `<div class="flex gap-3 mb-6" id="${thinkingId}"><div class="w-8 h-8 bg-orange-200 rounded-full flex-shrink-0 flex items-center justify-center shadow-sm">🏠</div><div class="bg-white/80 backdrop-blur-sm shadow-sm border-l-4 border-yellow-400 rounded-2xl rounded-tl-none p-3 msg-content flex items-center gap-2"><div class="flex gap-1"><span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0s"></span><span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></span><span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.4s"></span></div><span class="text-sm text-gray-500 font-medium italic">Để bố xem nào...</span></div></div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+
             try {
                 const res = await fetch('/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: messageText }) });
                 const data = await res.json();
                 let aiRes = data.response;
+                document.getElementById(thinkingId)?.remove();
 
                 const cardRegex = /\[CARD:\s*(.*?)\s*\|\s*(.*?)\s*\]/gi;
                 let cardData = null;
-                const cleanText = aiRes.replace(cardRegex, (match, title, content) => {
-                    cardData = { title: title.trim(), content: content.trim() };
-                    return "";
-                });
+                const cleanText = aiRes.replace(cardRegex, (match, title, content) => { cardData = { title: title.trim(), content: content.trim() }; return ""; });
 
                 const botMsgId = 'bot-' + Date.now();
-                chatBox.innerHTML += `
-                    <div class="flex gap-3 mb-6" id="${botMsgId}">
-                        <div class="w-8 h-8 bg-orange-200 rounded-full flex-shrink-0 flex items-center justify-center">🏠</div>
-                        <div class="max-w-[85%] bot-msg-container">
-                            <div class="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm border-l-4 border-blue-500 msg-content font-medium text-gray-800">
-                                ${cleanText.replace(/\n/g, '<br>')}
-                            </div>
-                        </div>
-                    </div>`;
+                chatBox.innerHTML += `<div class="flex gap-3 mb-6" id="${botMsgId}"><div class="w-8 h-8 bg-orange-200 rounded-full flex-shrink-0 flex items-center justify-center shadow-sm">🏠</div><div class="max-w-[85%] bot-msg-container"><div class="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm border-l-4 border-blue-500 msg-content font-medium text-gray-800">${cleanText.replace(/\n/g, '<br>')}</div></div></div>`;
 
                 if (cardData) {
-                    const cardHTML = `
-                        <div class="card-skill p-4 w-72 shadow-xl rounded-xl bg-gradient-to-br from-yellow-50 to-orange-50 relative overflow-hidden border border-yellow-200">
-                            <div class="absolute top-0 right-0 px-2 py-1 bg-yellow-400 text-[9px] font-black text-white">BÍ KÍP</div>
-                            <div class="text-sm font-black text-[#5d4037] border-b-2 border-yellow-200 mb-2 pb-1 uppercase italic">${cardData.title}</div>
-                            <div class="text-[11px] leading-relaxed text-gray-700 font-medium">${cardData.content}</div>
-                            <button onclick="saveCardToTreasure('${cardData.title.replace(/'/g, "\\'")}', '${cardData.content.replace(/'/g, "\\'")}')" class="mt-4 w-full bg-[#5d4037] text-white text-[10px] py-2 rounded-lg hover:bg-black transition font-bold uppercase tracking-wider">📦 Cất vào kho báu</button>
-                        </div>`;
+                    const tier = await determineTier(cardData.title, cardData.content);
+                    const tierClass = tier === 'common' ? 'card-common' : (tier === 'epic' ? 'card-epic' : 'card-legendary');
+                    const tierLabel = tier === 'common' ? '✨ COMMON ✨' : (tier === 'epic' ? '⚡ EPIC ⚡' : '🏆 LEGENDARY 🏆');
+                    const tierColor = tier === 'common' ? '#22c55e' : (tier === 'epic' ? '#8b5cf6' : '#eab308');
+                    const cardHTML = `<div class="${tierClass} mt-3 p-4 relative shadow-xl rounded-xl border-2 border-white" style="background: linear-gradient(135deg, ${tier === 'common' ? '#f0fdf4' : (tier === 'epic' ? '#f5f3ff' : '#fefce8')} 0%, ${tier === 'common' ? '#dcfce7' : (tier === 'epic' ? '#ede9fe' : '#fef3c7')} 100%); border-left: 8px solid ${tierColor};">
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="tier-badge" style="background: ${tierColor}; color: white;">${tierLabel}</div>
+                            <button onclick="saveCardToTreasure('${cardData.title.replace(/'/g, "\\'")}', '${cardData.content.replace(/'/g, "\\'")}')" class="text-xs bg-white/50 hover:bg-white rounded-full px-2 py-1 transition">📦 Cất vào kho báu</button>
+                        </div>
+                        <div class="font-black text-sm text-[#5d4037] mb-1 uppercase italic">${cardData.title}</div>
+                        <div class="text-[11px] leading-relaxed text-gray-700 font-medium">${cardData.content}</div>
+                    </div>`;
                     document.getElementById(botMsgId).querySelector('.bot-msg-container').innerHTML += cardHTML;
                 }
                 chatBox.scrollTop = chatBox.scrollHeight;
-            } catch (e) { console.error(e); }
+            } catch (e) {
+                document.getElementById(thinkingId)?.remove();
+                console.error(e);
+                chatBox.innerHTML += `<div class="flex gap-3 mb-6"><div class="w-8 h-8 bg-orange-200 rounded-full flex-shrink-0 flex items-center justify-center">🏠</div><div class="max-w-[85%] msg-content bg-white border-l-4 border-red-500 font-medium">Bố đang bận chút, thử lại sau nhé con!</div></div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
         }
 
         document.getElementById('user-input').addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
